@@ -9,7 +9,7 @@ Content-Type: application/json
 
 ### find a particular user
 
-GET http://localhost:3000/auth/1
+GET http://localhost:3000/auth/4
 
 
 ### find all users with given email
@@ -17,7 +17,7 @@ GET  http://localhost:3000/auth?email=cristian@email.com
 
 ### Delete a particular user
 
-DELETE http://localhost:3000/auth/2
+DELETE http://localhost:3000/auth/1
 
 ### update a user
 
