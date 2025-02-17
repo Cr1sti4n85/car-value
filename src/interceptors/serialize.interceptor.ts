@@ -9,12 +9,18 @@ import { map } from 'rxjs/operators';
 import { plainToInstance } from 'class-transformer';
 // import { UserDto } from '../users/dtos/user.dto';
 
-export function Serialize(dto: any) {
+//Esta interfaz se usa cuando queremos definir
+// un tipo que representa una clase en sí misma
+interface ClassConstructor {
+  new (...args: any[]): {};
+}
+
+export function Serialize(dto: ClassConstructor) {
   return UseInterceptors(new SerializeInterceptor(dto));
 }
 
 export class SerializeInterceptor implements NestInterceptor {
-  constructor(private dto: any) {}
+  constructor(private dto: ClassConstructor) {}
 
   intercept(
     _context: ExecutionContext,
