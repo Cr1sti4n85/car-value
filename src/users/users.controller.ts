@@ -10,6 +10,7 @@ import {
   Delete,
   NotFoundException,
   Session, //works with cookie-session
+  UseGuards,
   //UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -21,6 +22,7 @@ import { UserDto } from './dtos/user.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
 //import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
 import { User } from './user.entity';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -32,6 +34,7 @@ export class UsersController {
   ) {}
 
   @Get('/whoami')
+  @UseGuards(AuthGuard)
   async whoAmI(@CurrentUser() user: User) {
     // const user = await this.usersService.findOne(session.userId);
     if (!user) {
