@@ -17,6 +17,7 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -27,8 +28,8 @@ export class UsersController {
   ) {}
 
   @Get('/whoami')
-  async whoAmI(@Session() session: any) {
-    const user = await this.usersService.findOne(session.userId);
+  async whoAmI(@CurrentUser() user: string) {
+    // const user = await this.usersService.findOne(session.userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
