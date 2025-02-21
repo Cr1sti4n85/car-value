@@ -10,6 +10,7 @@ import {
   Delete,
   NotFoundException,
   Session, //works with cookie-session
+  //UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -18,9 +19,12 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { CurrentUser } from './decorators/current-user.decorator';
+//import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { User } from './user.entity';
 
 @Controller('auth')
 @Serialize(UserDto)
+//@UseInterceptors(CurrentUserInterceptor) //first we need the interceptor and then the decorator
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -28,7 +32,7 @@ export class UsersController {
   ) {}
 
   @Get('/whoami')
-  async whoAmI(@CurrentUser() user: string) {
+  async whoAmI(@CurrentUser() user: User) {
     // const user = await this.usersService.findOne(session.userId);
     if (!user) {
       throw new NotFoundException('User not found');
