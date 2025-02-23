@@ -5,10 +5,11 @@ import { User } from './user.entity';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let testUsersService: Partial<UsersService>;
 
   beforeEach(async () => {
     //Create testing copy of users service
-    const testUsersService: Partial<UsersService> = {
+    testUsersService = {
       find: () => Promise.resolve([]),
       create: (email: string, password: string) =>
         Promise.resolve({ id: 1, email, password } as User),
@@ -31,5 +32,19 @@ describe('AuthService', () => {
 
   it('can create an instance of Auth Service', async () => {
     expect(service).toBeDefined();
+  });
+  it('creates new user with hashed pass', async () => {
+    const user = await service.signup('test@email.com', 'Test_pass');
+    expect(user.password).not.toEqual('Test_pass');
+    const [salt, hash] = user.password.split('.');
+    expect(salt).toBeDefined();
+    expect(hash).toBeDefined();
+  });
+  it('throws error when email exists', async () => {
+    testUsersService.find = () =>
+      Promise.resolve([
+        { id: 1, email: 'a@email.com', password: 'pass' } as User,
+      ]);
+    await expect(service.signup('a@email.com', 'Test_pass')).rejects.toThrow();
   });
 });
