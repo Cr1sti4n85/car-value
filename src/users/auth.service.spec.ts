@@ -52,10 +52,7 @@ describe('AuthService', () => {
     expect(hash).toBeDefined();
   });
   it('throws error when email exists', async () => {
-    testUsersService.find = () =>
-      Promise.resolve([
-        { id: 1, email: 'a@email.com', password: 'pass' } as User,
-      ]);
+    await service.signup('a@email.com', 'Test_pass');
     await expect(service.signup('a@email.com', 'Test_pass')).rejects.toThrow();
   });
   it('throws error while login in with unused email', async () => {
@@ -63,8 +60,7 @@ describe('AuthService', () => {
   });
 
   it('throws error while login in with invaid pass', async () => {
-    testUsersService.find = () =>
-      Promise.resolve([{ email: 'a@email.com', password: 'pass' } as User]);
+    await service.signup('a@email.com', 'Test_pass');
     await expect(service.signin('a@email.com', 'wrong_pass')).rejects.toThrow();
   });
   it('returns user if valid credentials are provided', async () => {
