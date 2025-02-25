@@ -25,6 +25,7 @@ export class CreateReportDto {
 
   @IsLongitude()
   lng: number;
+
   @IsLatitude()
   lat: number;
 
