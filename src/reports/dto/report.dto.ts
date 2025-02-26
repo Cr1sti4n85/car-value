@@ -26,6 +26,8 @@ export class ReportDto {
   @Expose()
   mileage: number;
 
+  @Expose()
+  approved: boolean;
   //Transform decorator transforma un propiedad de lo que se retorna
   //para no retornar el objeto usuario compleo, solo el id.
   @Transform(({ obj }) => obj.user.id)
