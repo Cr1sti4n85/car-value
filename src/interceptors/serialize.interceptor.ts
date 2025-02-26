@@ -19,6 +19,8 @@ export function Serialize(dto: ClassConstructor) {
   return UseInterceptors(new SerializeInterceptor(dto));
 }
 
+//an interceptor is a class that is going to modify in some way the response
+//before it gets back to the person making the request
 export class SerializeInterceptor implements NestInterceptor {
   constructor(private dto: ClassConstructor) {}
 
