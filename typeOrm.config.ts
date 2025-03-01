@@ -4,7 +4,9 @@ import { config } from 'dotenv';
 import { User } from './src/users/user.entity';
 import { Report } from './src/reports/report.entity';
 
-config();
+const env = process.env.NODE_ENV;
+
+config({ path: `.env.${env}` });
 
 const configService = new ConfigService();
 

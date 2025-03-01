@@ -17,7 +17,12 @@
     "test:watch": "jest --watch --maxWorkers=1",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "set NODE_ENV=test&&jest --config ./test/jest-e2e.json --maxWorkers=1"
+    "test:e2e": "set NODE_ENV=test&&jest --config ./test/jest-e2e.json --maxWorkers=1",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "typeorm:generate-migration": "set NODE_ENV=development&& npm run typeorm -- -d ./typeOrm.config.ts migration:generate ./migrations/$npm_config_name",
+    "typeorm:create-migration": "npm run typeorm -- migration:create ./migrations/$npm_config_name",
+    "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeOrm.config.ts",
+    "typeorm:revert-migrations": "npm run typeorm migration:revert -- -d ./typeOrm.config.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
