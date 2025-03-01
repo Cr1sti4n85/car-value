@@ -21,14 +21,14 @@ const cookieSession = require('cookie-session');
       useFactory: (configService: ConfigService) => {
         return {
           type: 'sqlite',
-          database: configService.get<string>('DB_NAME'),
+          database: configService.getOrThrow<string>('DB_NAME'),
           entities: [User, Report],
-          synchronize: true,
+          synchronize: configService.getOrThrow<boolean>('DB_SYNC'),
         };
       },
     }),
     // TypeOrmModule.forRoot({
-    //   //creates db connection
+    //   creates db connection
     //   type: 'sqlite',
     //   database: 'db.sqlite',
     //   entities: [User, Report], //conenct entity to root connection
@@ -48,12 +48,13 @@ const cookieSession = require('cookie-session');
   ],
 })
 export class AppModule {
+  constructor(private configService: ConfigService) {}
   //global cookie session middleware
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(
         cookieSession({
-          keys: ['pass909090'],
+          keys: [this.configService.get('COOKIE_KEY')],
         }),
       )
       .forRoutes('*');
